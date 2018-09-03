@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>WuXi Blog</title>
+    <link rel="stylesheet" href="css/fontIcon/iconfont.css">
+    <link rel="stylesheet" href="css/fontIcon/iconfont-camera.css">
+    <link rel="stylesheet" href="css/fontIcon/iconfont-edit.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .show {
+            display: block;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        @media screen and (min-width: 1024px) {
+            .header {
+                display: flex;
+                position: relative;
+                flex-direction: column;
+                width: 100%;
+                height: 450px;
+                background-image: url(image/me-head.jpeg);
+                background-size: contain;
+            }
+            .header-mainnav-right-tip {
+                display: none;
+            }
+            .mainnav-fixed {
+                position: fixed;
+                background-color: rgba(255, 255, 255, 0.9);
+                color: black !important;
+                border-bottom: 1px solid lightgray;
+                z-index: 10;
+                box-sizing: border-box;
+                height: 70px !important;
+                width: 100%;
+            }
+
+            /*首页正文列表*/
+            .container {
+                margin: 0 15%;
+                padding: 30px 0;
+            }
+            .content-left-column {
+                margin-right: 260px;
+            }
+
+            .content-right-column {
+                position: absolute;
+                right: 0;
+                top: 0;
+                margin-top: 35px;
+                width: 250px;
+            }
+            .content-right-column-item>img {
+                width: 220px;
+                border-radius: 5px;
+                margin: 15px 0;
+            }
+
+            .content-bottom {
+                margin-top: 20px;
+                text-align: right;
+                margin-right: 250px;
+            }
+            .content-bottom-btn {
+                width: 160px;
+                height: 50px;
+                font-weight: 900;
+                background-color: white;
+                border: 1px solid #ccc;
+                outline: none;
+            }
+            .content-bottom-btn:hover {
+                background-color: #666666;
+                color: white;
+                cursor: pointer;
+            }
+            /*portfolio内容*/
+            .content-item {
+                margin: 0 auto 30px auto;
+                text-align: center;
+                width: 450px;
+                border: 1px solid #eee;
+                border-radius: 3px;
+            }
+        }
+
+        @media screen and (min-width: 768px) and (max-width: 1024px) {
+            .header {
+                display: flex;
+                position: relative;
+                flex-direction: column;
+                width: 100%;
+                height: 450px;
+                background-image: url(image/me-head.jpeg);
+                background-size: contain;
+            }
+            .header-mainnav-right-tip {
+                display: none;
+            }
+            .mainnav-fixed {
+                position: fixed;
+                background-color: rgba(255, 255, 255, 0.9);
+                color: black !important;
+                border-bottom: 1px solid #eee;
+                z-index: 10;
+                width: 100%;
+                box-sizing: border-box;
+                height: 70px !important;
+            }
+            /*首页正文列表*/
+            .container {
+                margin: 0 15%;
+                padding: 30px 0;
+            }
+            .content-left-column {
+                margin-right: 200px;
+            }
+
+            .content-right-column {
+                position: absolute;
+                right: 0;
+                top: 0;
+                margin-left: 3%;
+                margin-top: 35px;
+                width: 190px;
+            }
+            .content-right-column-item>img {
+                width: 170px;
+                border-radius: 5px;
+                margin: 15px 0;
+            }
+            .content-bottom {
+                margin-top: 20px;
+                text-align: right;
+                margin-right: 190px;
+            }
+            .content-bottom-btn {
+                width: 160px;
+                height: 50px;
+                font-weight: 900;
+                background-color: white;
+                border: 1px solid #ccc;
+                outline: none;
+            }
+            .content-bottom-btn:hover {
+                background-color: #666666;
+                color: white;
+                cursor: pointer;
+            }
+            /*portfolio内容*/
+            .content-item {
+                margin: 0 15% 30px 15%;
+                text-align: center;
+                width: 70%;
+                border: 1px solid #eee;
+                border-radius: 3px;
+            }
+        }
+
+        @media screen and (max-width: 768px) and (min-width: 600px) {
+            .header {
+                display: flex;
+                position: relative;
+                flex-direction: column;
+                width: 100%;
+                height: 300px;
+                background-image: url(image/me-head.jpeg);
+                background-size: contain;
+            }
+            .header-mainnav-right-tip {
+                display: none;
+            }
+            /*首页正文列表*/
+            .container {
+                margin: 0 3%;
+                padding: 30px 0;
+            }
+            .content-right-column {
+                display: none;
+            }
+            .content-bottom {
+                margin-top: 20px;
+                text-align: right;
+            }
+            .content-bottom-btn {
+                width: 160px;
+                height: 50px;
+                font-weight: 900;
+                background-color: white;
+                border: 1px solid #ccc;
+                outline: none;
+            }
+            .content-bottom-btn:hover {
+                background-color: #666666;
+                color: white;
+                cursor: pointer;
+            }
+            /*portfolio内容*/
+            .content-item {
+                margin: 0 15% 30px 15%;
+                text-align: center;
+                width: 70%;
+                border: 1px solid #eee;
+                border-radius: 3px;
+            }
+            #backToTop {
+                display: none;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .header {
+                display: flex;
+                position: relative;
+                flex-direction: column;
+                width: 100%;
+                height: 300px;
+                background-image: url(image/me-head.jpeg);
+                background-size: contain;
+            }
+            .header-mainnav>.header-mainnav-right {
+                display: none;
+            }
+            .header-mainnav-right-tip {
+                display: block;
+                font-weight: 900px;
+                color: white;
+                margin-right: 30px;
+            }
+            .header-mainnav-right-tip:hover {
+                color: lightgray;
+                cursor: pointer;
+            }
+            /*首页正文列表*/
+            .container {
+                margin: 0 3%;
+                padding: 30px 0;
+            }
+            .content-right-column {
+                display: none;
+            }
+            .content-bottom {
+                margin-top: 20px;
+                text-align: right;
+            }
+            .content-bottom-btn {
+                width: 160px;
+                height: 50px;
+                font-weight: 900;
+                background-color: white;
+                border: 1px solid #ccc;
+                outline: none;
+            }
+            .content-bottom-btn:hover {
+                background-color: #666666;
+                color: white;
+                cursor: pointer;
+            }
+            /*portfolio内容*/
+            .content-item {
+                margin: 0 15% 30px 15%;
+                text-align: center;
+                /*height: 300px;*/
+                width: 70%;
+                border: 1px solid #eee;
+                border-radius: 3px;
+            }
+            #backToTop {
+                display: none;
+            }
+        }
+
+        .header-mainnav {
+            padding: 15px;
+            height: 40px;
+            line-height: 40px;
+            font-weight: 900;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .header-mainnav a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .mainnav-fixed a {
+            color: black !important;
+            font-weight: 900;
+        }
+
+        .header-mainnav>.header-mainnav-left {
+            width: 100px;
+            font-size: 20px;
+        }
+
+        .header-mainnav>.header-mainnav-right {
+            width: 420px;
+            font-size: 12px;
+        }
+
+        .header-mainnav>.header-mainnav-right>.header-mainnav-right-item {
+            display: inline-block;
+            text-align: center;
+            width: 90px;
+            padding: 0 5px;
+        }
+
+        .header-mainnav-left:hover,
+        .header-mainnav-right-item:hover {
+            cursor: pointer;
+            color: lightgray;
+        }
+
+        .header-title {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            top: 70px;
+            bottom: 0;
+            width: 100%;
+            font-size: 50px;
+            font-weight: 900;
+            color: white;
+        }
+
+        /*返回顶部*/
+
+        #backToTop {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid lightgray;
+            border-radius: 6px;
+            line-height: 40px;
+            color: lightgray;
+            font-weight: 900;
+            text-align: center;
+            padding-top: 10px;
+            font-size: 32px;
+            z-index: 110px;
+            bottom: 100px;
+            right: 40px;
+        }
+
+        #backToTop:hover {
+            cursor: pointer;
+            border-color: #666666;
+            color: #666666;
+        }
+
+        /*播放器/编辑器悬浮*/
+
+        #fixedBox {
+            position: fixed;
+            width: 120px;
+            height: 40px;
+            border: 1px solid lightgray;
+            border-radius: 6px;
+            line-height: 40px;
+            text-align: center;
+            z-index: 99999;
+            right: -90px;
+            top: 50%;
+            margin-top: -20px;
+            background-color: white;
+            color: #666666;
+        }
+
+        #fixedBox:hover {
+            /*box-shadow: 0 0 2px 2px #888888;*/
+            border-width: 2px;
+        }
+
+        .fixed-box-content {
+            box-sizing: border-box;
+            width: 50%;
+            height: 100%;
+            text-align: center;
+            line-height: inherit;
+            float: left;
+        }
+
+        .fixed-box-content:hover {
+            cursor: pointer;
+            color: black;
+        }
+
+        .fixed-box-content>i {
+            display: inline-block;
+            width: 100%;
+        }
+
+        /*home 页面内容*/
+
+        .container>.content {
+            position: relative;
+            padding: 15px;
+        }
+
+        .content>div {
+            width: 100%;
+        }
+
+        .content-left-column-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .content-left-column-item-title {
+            font-size: 32px;
+            font-weight: 900;
+        }
+
+        .content-left-column-item-subtitle {
+            font-size: 18px;
+            padding: 10px 0;
+        }
+
+        .content-left-column-item-content {
+            font-style: italic;
+            font-size: 14px;
+            color: #a3a3a3;
+        }
+
+        .content-left-column-item-footer {
+            font-style: italic;
+            color: lightgray;
+            padding: 10px 0;
+        }
+
+
+        .content-right-column-item {
+            width: 100%;
+            border-top: 1px solid #eee;
+            padding: 15px 0;
+            color: #ccc;
+        }
+
+        .content-right-column-item-title {
+            width: 100%;
+            padding-bottom: 15px;
+            font-weight: 900;
+        }
+
+        .content-right-column-item-para {
+            padding: 2px 0;
+        }
+
+        .content-right-column-item-footer {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .content-right-column-item-footer>i {
+            font-size: 35px;
+            color: #ccc;
+            margin: 0 3px;
+        }
+
+        .content-item-title {
+            height: 40px;
+            line-height: 40px;
+            font-style: italic;
+            font-weight: 900;
+            color: #666;
+            box-sizing: border-box;
+            padding: 0 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .content-item-title-right {
+            font-style: normal;
+            font-size: 12px;
+            color: #a5a7aa;
+            font-weight: normal;
+        }
+
+        .content-item-footer {
+            height: 80px;
+            line-height: 80px;
+            box-sizing: border-box;
+            padding: 0 10px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .content-item-footer a {
+            width: 100%;
+            height: 100%;
+            display: inline-block;
+            text-decoration: none;
+            color: #a5a7aa;
+        }
+
+        .content-item-footer a:hover {
+            background: #eee;
+        }
+
+        .content-item-footer div {
+            border: 1px solid #ccc;
+            height: 40px;
+            line-height: 40px;
+            width: 60px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+
+        /*articles页面*/
+
+        .content-top-img {
+            width: 100%;
+            height: 300px;
+            border-radius: 5px;
+            background-color: #f7f8f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .content-top-img div {
+            color: gray;
+        }
+
+        .content-top-input {
+            outline: none;
+            width: 100%;
+            height: 40px;
+            color: black;
+            border-radius: 5px;
+            border: 1px solid #DBDBDB;
+            font-size: 22px;
+            font-family: "serif,sans-serif,cursive,fantasy,monospace";
+            margin: 20px 0;
+        }
+
+        #editor {
+            width: 100%;
+            height: 450px;
+        }
+
+        .content-bottom-btn-save {
+            width: 100%;
+            height: 40px;
+            margin: 20px 0;
+            outline: none;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .content-bottom-btn-save:hover {
+            color: white;
+            background-color: #666666;
+            cursor: pointer;
+        }
+
+        .hover:hover {
+            color: #666666;
+            cursor: pointer;
+        }
+
+        .flex {
+            display: flex !important;
+        }
+
+        .black a,
+        .black span {
+            color: black !important;
+        }
+
+        .tag {
+            padding: 4px 10px;
+            border-radius: 15px;
+            margin: 5px 3px;
+            display: inline-block;
+            font-size: 12px;
+            border: 1px solid #ccc;
+        }
+
+        .tag:hover {
+            border: 1px solid #666666;
+        }
+
+        .footer {
+            margin: 30px 0 100px 0;
+            text-align: center;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="backToTop" class="hide">
+        ^
+    </div>
+    <div id="fixedBox">
+        <div class="fixed-box-content" style="border-right: 1px solid lightgray;">
+            <i class="icon iconfont icon-edit"></i>
+        </div>
+        <div class="fixed-box-content">
+            <i class="icon iconfont icon-bofangqi-bofang"></i>
+        </div>
+    </div>
+    <div class="header" hash="home">
+        <div class="header-mainnav">
+            <span class="header-mainnav-left"><a href="#home">WuXi Blog</a></span>
+            <span class="header-mainnav-right">
+                <span class="header-mainnav-right-item"><a href="#home">HOME</a></span>
+                <span class="header-mainnav-right-item"><a href="#articles">ARTICLES</a></span>
+                <span class="header-mainnav-right-item"><a href="#portfolio">PORTFOLIO</a></span>
+                <span class="header-mainnav-right-item"><a href="#about">ABOUT</a></span>
+            </span>
+            <span class="header-mainnav-right-tip">
+                三
+            </span>
+        </div>
+        <div class="header-title">
+            WuXi Blog
+        </div>
+    </div>
+    <div class="header-mainnav black" hash="common">
+        <span class="header-mainnav-left"><a href="#home">WuXi Blog</a></span>
+        <span class="header-mainnav-right">
+            <span class="header-mainnav-right-item"><a href="#home">HOME</a></span>
+            <span class="header-mainnav-right-item"><a href="#articles">ARTICLES</a></span>
+            <span class="header-mainnav-right-item"><a href="#portfolio">PORTFOLIO</a></span>
+            <span class="header-mainnav-right-item"><a href="#about">ABOUT</a></span>
+        </span>
+        <span class="header-mainnav-right-tip">
+            三
+        </span>
+    </div>
+    <div class="container">
+        <div class="content">
+            <div hash="home">
+                <div class="content-left-column"></div>
+                <div class="content-right-column">
+                    <div class="content-right-column-item">
+                        <div class="content-right-column-item-title">TAG</div>
+                        <div id="tag">
+                            <div class="tag hover">JavaScript</div>
+                            <div class="tag hover">ionic3</div>
+                            <div class="tag hover">Vue</div>
+                            <div class="tag hover">Angular</div>
+                            <div class="tag hover">个人感悟</div>
+                        </div>
+                    </div>
+                    <div class="content-right-column-item">
+                        <div class="content-right-column-item-title">ABOUT ME</div>
+                        <img src="image/me-head.jpeg" alt="">
+                        <div class="content-right-column-item-para">Keep questioning, keep running</div>
+                        <div class="content-right-column-item-para">质疑以磨练心智，奔跑以塑造体魄</div>
+                        <div class="content-right-column-item-footer">
+                            <i class="icon iconfont icon-github hover"></i>
+                            <i class="icon iconfont icon-weibo hover"></i>
+                            <i class="icon iconfont icon-zhihu-circle-fill hover"></i>
+                            <i class="icon iconfont icon-google-plus hover"></i>
+                        </div>
+                    </div>
+                    <div class="content-right-column-item">
+                        <div class="content-right-column-item-title">FRIENDS</div>
+                        <div class="content-right-column-item-para hover">小宝贝恬恬</div>
+                    </div>
+                </div>
+                <div class="content-bottom" hash="home">
+                    <button class="content-bottom-btn">OLDER POSTS-></button>
+                </div>
+            </div>
+            <div hash="edit">
+                <div class="content-top-img">
+                    <div style="text-align: center;" class="hover">
+                        <i class="icon iconfont icon-camera" style="font-size: 60px;"></i>
+                        <div>选择文章标题照片</div>
+                    </div>
+                </div>
+                <input type="text" placeholder="请输入文章标题" class="content-top-input">
+                <div id="editor"></div>
+                <button class="content-bottom-btn-save">发布文章</button>
+            </div>
+            <div hash="portfolio">
+                <div class="content-item">
+                    <div class="content-item-title">
+                        <span class="content-item-title-left">
+                            ES5单页全屏滚动特效
+                        </span>
+                        <span class="content-item-title-right">
+                            2018.08
+                        </span>
+                    </div>
+                    <img src="image/lightblue.png" alt="" style="width: 100%">
+                    <div class="content-item-footer">
+                        <div class="hover">
+                            <a href="full_page.html">
+                                查看
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-item">123</div>
+                <div class="content-item">123</div>
+            </div>
+            <div hash="about"></div>
+        </div>
+    </div>
+    <div class="footer">
+        <div>Copyright © WuXi Blog 2018 </div>
+        <div>Theme by WuXi | Git Star</div>
+    </div>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        var homeTemplate = "<div class='content-left-column-item'><div class='content-left-column-item-title hover'>{title}</div><div class='content-left-column-item-subtitle'>{subTitle}</div><div class='content-left-column-item-content'>{content}</div><div class='content-left-column-item-footer'>Posted by WuXi On {postDate}</div></div>";
+
+        var homeList = [{
+            title: "搭建简单的js模版引擎",
+            subTitle: "simple javascript template constructing",
+            content: "随着Nodejs的流行，JavaScript在前端和后端都开始流行起来。有许多成熟的JavaScript模板引擎，例如Swig，既可以用在后端，又可以用在前端。 不过很多时候，前端模板仅仅需要简单地创建一个HTML片段，用Swig这种全功能模板有点大材小用。我们来尝试自己编写一个简单的前端模板引擎，实际上并不复杂。",
+            postDate: "Aut 15, 2018"
+        },
+        {
+            title: "搭建简单的js模版引擎",
+            subTitle: "simple javascript template constructing",
+            content: "随着Nodejs的流行，JavaScript在前端和后端都开始流行起来。有许多成熟的JavaScript模板引擎，例如Swig，既可以用在后端，又可以用在前端。 不过很多时候，前端模板仅仅需要简单地创建一个HTML片段，用Swig这种全功能模板有点大材小用。我们来尝试自己编写一个简单的前端模板引擎，实际上并不复杂。",
+            postDate: "Aut 15, 2018"
+        },
+        {
+            title: "搭建简单的js模版引擎",
+            subTitle: "simple javascript template constructing",
+            content: "随着Nodejs的流行，JavaScript在前端和后端都开始流行起来。有许多成熟的JavaScript模板引擎，例如Swig，既可以用在后端，又可以用在前端。 不过很多时候，前端模板仅仅需要简单地创建一个HTML片段，用Swig这种全功能模板有点大材小用。我们来尝试自己编写一个简单的前端模板引擎，实际上并不复杂。",
+            postDate: "Aut 15, 2018"
+        }
+
+        ];
+
+
+        var homeNodeList = document.querySelectorAll("[hash='home']"),
+            articlesNodeList = document.querySelectorAll("[hash='articles']"),
+            portfolioNodeList = document.querySelectorAll("[hash='portfolio']"),
+            aboutNodeList = document.querySelectorAll("[hash='aount']"),
+            hashNodeList = document.querySelectorAll("[hash]"),
+            commonNodeList = document.querySelectorAll("[hash='common']"),
+            editNodeList = document.querySelectorAll("[hash='edit']");
+        var fixedBox = document.getElementById("fixedBox");
+
+        // quill编辑器
+        var quill = new Quill("#editor", {
+            modules: {
+                toolbar: [
+                    [{ header: [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['image', 'code-block']
+                ]
+            },
+            placeholder: '请输入文章内容',
+            theme: 'snow'
+        });
+
+        window.addEventListener("load", function () {
+
+            getHashElement();
+
+        })
+
+        window.addEventListener("hashchange", function () {
+            getHashElement();
+        })
+
+        document.addEventListener("mousewheel", function () {
+            var mainNav = document.getElementsByClassName("header-mainnav")[0],
+                className = mainNav.getAttribute("class");
+            // 滚动条滚动的高度
+            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop,
+                backToTop = document.getElementById("backToTop"),
+                backToTopClassName = backToTop.getAttribute("class");
+
+            if (event.wheelDelta > 0 && scrollTop > 0) {
+                if (className.indexOf("fixed") == -1) {
+                    mainNav.setAttribute("class", className + " mainnav-fixed");
+                }
+            } else {
+                mainNav.setAttribute("class", className.split(" mainnav-fixed").join(""));
+            }
+            // if (scrollTop > document.documentElement.clientHeight) {
+            if (scrollTop > 500) {
+                if (backToTopClassName.indexOf("hide") != -1) {
+                    backToTop.setAttribute("class", "show");
+                }
+            } else {
+                if (backToTopClassName.indexOf("show") != -1) {
+                    backToTop.setAttribute("class", "hide");
+                }
+            }
+        }, false);
+
+
+
+        fixedBox.addEventListener("mouseenter", function () {
+            var height = 40,
+                lineHeight = height,
+                right = -90,
+                unit = "px";
+
+            var fixedBoxTimer = setInterval(function () {
+                if (right < 0) {
+                    right += 15;
+                    height += 5;
+                    lineHeight = height;
+
+                    fixedBox.style.right = right + unit;
+                    fixedBox.style.height = height + unit;
+                    fixedBox.style.lineHeight = lineHeight + unit;
+                    fixedBox.style.marginTop = -(height / 2) + unit;
+                }
+                else {
+                    clearInterval(fixedBoxTimer);
+                }
+            }, 10);
+        });
+
+        fixedBox.addEventListener("mouseleave", function () {
+            var height = 70,
+                lineHeight = height,
+                right = 0,
+                unit = "px";
+
+            var fixedBoxTimer = setInterval(function () {
+                if (right > -90) {
+                    right -= 15;
+                    height -= 5;
+                    lineHeight = height;
+
+                    fixedBox.style.right = right + unit;
+                    fixedBox.style.height = height + unit;
+                    fixedBox.style.lineHeight = lineHeight + unit;
+                    fixedBox.style.marginTop = -(height / 2) + unit;
+                }
+                else {
+                    clearInterval(fixedBoxTimer);
+                }
+            }, 10);
+        });
+
+        document.addEventListener("click", function () {
+            var target = event.target,
+                tagName = target.nodeName.toLowerCase(),
+                className = target.getAttribute("class");
+
+            // 回到顶部
+            if (target.getAttribute("id") == "backToTop") {
+                var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                if (scrollTop > 0) {
+                    // if (scrollTop > document.documentElement.clientHeight) {
+                    var backToTopTimer = setInterval(function () {
+                        if (document.documentElement.scrollTop > 1000) {
+                            document.documentElement.scrollTop -= 300;
+                        } else if (document.documentElement.scrollTop > 500) {
+                            document.documentElement.scrollTop -= 100;
+                        } else if (document.documentElement.scrollTop > 100) {
+                            document.documentElement.scrollTop -= 80;
+                        } else if (document.documentElement.scrollTop > 0) {
+                            document.documentElement.scrollTop -= 50;
+                        } else {
+                            var backToTop = document.getElementById("backToTop");
+                            backToTop.setAttribute("class", "hide");
+                            clearInterval(backToTopTimer);
+                        }
+                    }, 10);
+                }
+            }
+            // 播放器开关 
+            else if (tagName === "i") {
+                if (className.indexOf("bofangqi") != -1) {
+                    var classNameSplit = className.split("-");
+                    var lastWord = classNameSplit[classNameSplit.length - 1];
+                    if (lastWord === "bofang") {
+                        classNameSplit[classNameSplit.length - 1] = "zanting"
+                        target.setAttribute("class", classNameSplit.join("-"));
+                    } else if (lastWord === "zanting") {
+                        classNameSplit[classNameSplit.length - 1] = "bofang"
+                        target.setAttribute("class", classNameSplit.join("-"));
+                    }
+                } else if (className.indexOf("edit") != -1) {
+                    this.location.hash = "edit";
+                }
+            }
+        }, false)
+
+        // 根据页面hash值显示/隐藏元素
+        function getHashElement() {
+            var currentHash = window.location.hash;
+
+            for (var i = 0; i < hashNodeList.length; i++) {
+                hashNodeList[i].style.display = "none";
+            }
+
+            for (var j = 0; j < commonNodeList.length; j++) {
+                commonNodeList[j].style.display = "flex";
+            }
+
+            if (currentHash === "#home" || currentHash === "") {
+                for (var i = 0; i < homeNodeList.length; i++) {
+                    homeNodeList[i].style.display = "block";
+                }
+                for (var j = 0; j < commonNodeList.length; j++) {
+                    commonNodeList[j].style.display = "none";
+                }
+                init_home();
+            } else if (currentHash === "#articles") {
+                for (var i = 0; i < articlesNodeList.length; i++) {
+                    articlesNodeList[i].style.display = "block";
+                }
+
+            } else if (currentHash === "#portfolio") {
+                for (var i = 0; i < portfolioNodeList.length; i++) {
+                    portfolioNodeList[i].style.display = "block";
+                }
+
+            } else if (currentHash === "#about") {
+                for (var i = 0; i < aboutNodeList.length; i++) {
+                    aboutNodeList[i].style.display = "block";
+                }
+            } else if (currentHash === "#edit") {
+                for (var i = 0; i < editNodeList.length; i++) {
+                    editNodeList[i].style.display = "block";
+                }
+            }
+        }
+
+        // 初始化首页
+        function init_home() {
+            var content = document.getElementsByClassName("content-left-column")[0];
+
+            // 匹配全局{xxx}
+            var repx = /\{\s*([a-zA-Z\.\_0-9()]+)\s*\}/gm,
+                pageString = "";
+
+            var xhr = createXHR();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+                        homeList = xhr.responseText.homeList;
+                        console.log("homeList", homeList);
+                        if (!homeList || homeList.length == 0) return;
+
+                        for (var i = 0; i < homeList.length; i++) {
+                            pageString += homeTemplate.replace(repx, function (match, orginalText, pos) {
+                                switch (orginalText) {
+                                    case "title":
+                                        return homeList[i].title;
+                                    case "subTitle":
+                                        return homeList[i].subTitle;
+                                    case "content":
+                                        return homeList[i].content;
+                                    case "postDate":
+                                        return homeList[i].postDate;
+                                }
+                            });
+                        }
+                        content.innerHTML = pageString;
+                    } else {
+                        console.log("failed to load");
+                    }
+                } else {
+                    console.log("failed to connect");
+                }
+            }
+            xhr.open("get", "/homeList", false);
+            xhr.send(null);
+        }
+
+        // 创建xhr对象
+        function createXHR() {
+            return new XMLHttpRequest();
+        }
+    </script>
+</body>
+
+</html>
