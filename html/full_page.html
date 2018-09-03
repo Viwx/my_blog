@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>full_page</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        overflow: hidden;
+    }
+
+    .lightgreen {
+        background-color: lightgreen;
+    }
+
+    .lightpink {
+        background-color: lightpink;
+    }
+
+    .lightblue {
+        background-color: lightblue;
+    }
+
+    .lightgray {
+        background-color: lightgray;
+    }
+
+    .changeSlice {
+        width: 15px;
+        position: fixed;
+        right: 0;
+        text-align: center;
+        z-index: 10;
+    }
+
+    .changeSlicePoint {
+        width: 15px;
+        height: 15px;
+        line-height: 15px;
+        margin: 45px 0;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .changeSlicePoint:hover {
+        cursor: pointer;
+        box-shadow: 2px 2px 3px #aaaaaa;
+    }
+
+    .active {
+        height: 30px;
+        border-radius: 7.5px;
+        background-color: white;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="changeSlice">
+        <div class="changeSlicePoint active"></div>
+        <div class="changeSlicePoint"></div>
+        <div class="changeSlicePoint"></div>
+        <div class="changeSlicePoint"></div>
+    </div>
+    <div id="container">
+        <div class="section lightgreen"></div>
+        <div class="section lightpink"></div>
+        <div class="section lightblue"></div>
+        <div class="section lightgray"></div>
+    </div>
+    <script>
+    var sections = document.getElementsByClassName("section");
+    var queue = [0, 1, 2, 3];
+    var top = 0;
+    var currentPage = 0;
+    var clientHeight = document.documentElement.clientHeight,
+        clientWidth = document.documentElement.clientWidth,
+        container = document.getElementById("container");
+
+    initPage(container);
+    changeSliceBoxLoc();
+
+
+    document.addEventListener("click", function() {
+        var target = event.target;
+        changeActivePoint(target);
+    }, false);
+
+    document.addEventListener("mousewheel", function() {
+        var tempPage = currentPage;
+        if (event.wheelDelta < 0) {
+            if (currentPage < 3) {
+                ++currentPage;
+            }
+        } else {
+            if (currentPage > 0) {
+                --currentPage;
+            }
+        }
+        // container.style.top = -currentPage * (clientHeight) + "px";
+        changeActivePoint(tempPage);
+    }, false);
+
+    window.addEventListener("resize", function() {
+        fullPageBackgroundColor();
+        changeSliceBoxLoc();
+    }, false);
+
+    /*
+     ** 初始化各个分屏
+     */
+    function initPage(container) {
+        container.style.position = "absolute";
+        container.style.height = clientHeight * (queue.length) + "px";
+        container.style.width = clientWidth + "px";
+        container.style.top = "0px";
+        fullPageBackgroundColor();
+    }
+
+    /*
+     ** 保证每个屏幕的大小充满可视区域
+     */
+    function fullPageBackgroundColor() {
+        clientHeight = document.documentElement.clientHeight;
+        clientWidth = document.documentElement.clientWidth;
+        for (var i = 0; i < sections.length; i++) {
+            sections[i].style.height = clientHeight + "px";
+            sections[i].style.width = clientWidth + "px";
+        }
+        container.style.top = -currentPage * (clientHeight) + "px";
+    }
+
+    /*
+     **	使得切换屏幕的按钮一直居中
+     */
+    function changeSliceBoxLoc() {
+        var changeSlice = document.getElementsByClassName("changeSlice")[0];
+        var marginTop = (clientHeight - changeSlice.offsetHeight) / 2;
+        changeSlice.style.margin = marginTop + "px 50px " + marginTop + "px 0";
+    }
+
+    /*
+     ** 切换屏幕的悬浮框样式
+     */
+    function changeActivePoint() {
+        var changePoints = document.getElementsByClassName("changeSlicePoint");
+
+        if (typeof arguments[0] == "object") {
+            var target = arguments[0];
+            if (!target) return;
+            var className = target.getAttribute("class");
+            if (className == "changeSlicePoint") {
+                for (var i = 0; i < changePoints.length; i++) {
+                    changePoints[i].setAttribute("class", changePoints[i].getAttribute("class").split(" active").join(""));
+                }
+                target.setAttribute("class", className + " active");
+
+                var tempPage = currentPage;
+                currentPage = Array.prototype.indexOf.call(changePoints, target);
+                var start = tempPage * clientHeight,
+                    end = currentPage * clientHeight;
+
+                var moveTimer = setInterval(function() {
+                    if (start > end) {
+
+                        if (start - end > 800) {
+                            start -= 300;
+                        } else if (start - end <= 800 && start - end > 100) {
+                            start -= 80;
+                        }
+                        else {
+                            start -= 30;
+                        }
+
+                        if (start <= end) {
+                            container.style.top = -end + "px";
+                            clearInterval(moveTimer);
+                            return;
+                        }
+                        container.style.top = -start + "px";
+                    } else if (start < end) {
+
+                        if (end - start > 800) {
+                            start += 300;
+                        } else {
+                            start += 50;
+                        }
+
+                        if (start >= end) {
+                            container.style.top = -end + "px";
+                            clearInterval(moveTimer);
+                            return;
+                        }
+                        container.style.top = -start + "px";
+
+                    } else {
+                        clearInterval(moveTimer);
+                    }
+
+                }, 20);
+            }
+        } else if (typeof arguments[0] == "number") {
+            for (var i = 0; i < changePoints.length; i++) {
+                changePoints[i].setAttribute("class", changePoints[i].getAttribute("class").split(" active").join(""));
+            }
+            var tempPage = arguments[0];
+
+            // container.style.top = -currentPage * (clientHeight) + "px";
+            var start = tempPage * clientHeight,
+                end = currentPage * clientHeight;
+
+            var moveTimer = setInterval(function() {
+                if (start > end) {
+
+                    if (start - end > 800) {
+                        start -= 300;
+                    } else {
+                        start -= 50;
+                    }
+
+                    if (start <= end) {
+                        container.style.top = -end + "px";
+                        clearInterval(moveTimer);
+                        return;
+                    }
+                    container.style.top = -start + "px";
+                } else if (start < end) {
+
+                    if (end - start > 800) {
+                        start += 300;
+                    } else {
+                        start += 50;
+                    }
+
+                    if (start >= end) {
+                        container.style.top = -end + "px";
+                        clearInterval(moveTimer);
+                        return;
+                    }
+                    container.style.top = -start + "px";
+
+                } else {
+                    clearInterval(moveTimer);
+                }
+
+            }, 20);
+            changePoints[currentPage].setAttribute("class", changePoints[currentPage].getAttribute("class") + " active");
+        }
+
+
+    }
+    </script>
+</body>
+
+</html>

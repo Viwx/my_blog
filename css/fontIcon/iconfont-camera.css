@@ -1,0 +1,19 @@
+
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1535720403022'); /* IE9*/
+  src: url('iconfont.eot?t=1535720403022#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAARcAAsAAAAABqwAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABHU1VCAAABCAAAADMAAABCsP6z7U9TLzIAAAE8AAAARAAAAFY8vkigY21hcAAAAYAAAABLAAABcOdvtn9nbHlmAAABzAAAAKMAAAC4y7FN2mhlYWQAAAJwAAAAMQAAADYTSf2jaGhlYQAAAqQAAAAeAAAAJAirBE5obXR4AAACxAAAAAgAAAAICMz//2xvY2EAAALMAAAABgAAAAYAXAAAbWF4cAAAAtQAAAAgAAAAIAEPAENuYW1lAAAC9AAAAUUAAAJtPlT+fXBvc3QAAAQ8AAAAHwAAADDW025teJxjYGRgYOBikGPQYWB0cfMJYeBgYGGAAJAMY05meiJQDMoDyrGAaQ4gZoOIAgCKIwNPAHicY2BkSWOcwMDKwMHUyXSGgYGhH0IzvmYwYuRgYGBiYGVmwAoC0lxTGByeuT9zZ27438AQw9zI0AgUZgTJAQAJcgzZeJxjYGBgZWBgYAZiHSBmYWBgDGFgZAABP6AoI1icmYELLM7CoARWwwISf+b+/z+MBPJZwCQDIxvDKOABkzJQHjisIJiBEQDWiAqFAHicNYu7CsJAEEXnEbAQNqRRTOESIqaTpNHOTkTYNNtab6qkTjrxSwL5H0s/x10niMXccznMBQ4hPKIXPyGFPRwBMC8OWGQKY8wVLpItrrMznhKRKCdVjEKUlF5W4uStjJbTLq60D7pS+WQ75s7y7Ud/70fmsR/m9G9ypnZErjaOGK4bjaTTC7XWg21JSDM/t/9i6EdcmXlhTEPUGAD4Ap6BKYcAeJxjYGRgYADipXf9lsXz23xl4GZhAIHr62Muw+j////Xs5xlbgRyORiYQKIAgR8ObAAAAHicY2BkYGBu+N/AEMNy5j8QsJxlAIqgACYAw9EIAAAABAAAAATM//8AAAAAAFwAAAABAAAAAgA3AAMAAAAAAAIAAAAKAAoAAAD/AAAAAAAAeJxlj01OwzAQhV/6B6QSqqhgh+QFYgEo/RGrblhUavdddN+mTpsqiSPHrdQDcB6OwAk4AtyAO/BIJ5s2lsffvHljTwDc4Acejt8t95E9XDI7cg0XuBeuU38QbpBfhJto41W4Rf1N2MczpsJtdGF5g9e4YvaEd2EPHXwI13CNT+E69S/hBvlbuIk7/Aq30PHqwj7mXle4jUcv9sdWL5xeqeVBxaHJIpM5v4KZXu+Sha3S6pxrW8QmU4OgX0lTnWlb3VPs10PnIhVZk6oJqzpJjMqt2erQBRvn8lGvF4kehCblWGP+tsYCjnEFhSUOjDFCGGSIyujoO1Vm9K+xQ8Jee1Y9zed0WxTU/3OFAQL0z1xTurLSeTpPgT1fG1J1dCtuy56UNJFezUkSskJe1rZUQuoBNmVXjhF6XNGJPyhnSP8ACVpuyAAAAHicY2BigAAuBuyAiZGJkZmBLTkxN7UokYEBAA/uAoUA') format('woff'),
+  url('iconfont.ttf?t=1535720403022') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1535720403022#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-camera:before { content: "\e647"; }
+
