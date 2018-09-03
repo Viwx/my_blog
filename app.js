@@ -10,5 +10,6 @@ app.use(staticServe(__dirname + "/views"));
 
 
 app.use(require("./router/home.js").routes());
+app.use(require("./router/article.js").routes());
 
 app.listen(3000);

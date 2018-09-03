@@ -899,6 +899,28 @@
                     this.location.hash = "edit";
                 }
             }
+            else if (tagName === "button") {
+                if (className.indexOf("save") != -1) {
+                    var title = document.getElementsByClassName("content-top-input")[0],
+                        editor = quill,
+                        articleTitle = title.value,
+                        articleContent = editor.getContents();
+                    console.log("title: ", articleTitle, "content: ", articleContent);
+
+                    var xhr = createXHR();
+                    xhr.onreadystatechange = function(){
+                        if(xhr.readyState == 4){
+                            if(xhr.status >= 200 && xhr.status<300 || xhr.status == 304){
+                                alert("文章发布成功");
+                            }else{
+                                console.log("发布失败");
+                            }
+                        }
+                    }
+                    xhr.open("post", "/addBlog", false);
+                    xhr.send({articleTitle, articleContent});
+                }
+            }
         }, false)
 
         // 根据页面hash值显示/隐藏元素
@@ -955,7 +977,6 @@
                 if (xhr.readyState == 4) {
                     if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
                         homeList = xhr.responseText.homeList;
-                        console.log("homeList", homeList);
                         if (!homeList || homeList.length == 0) return;
 
                         for (var i = 0; i < homeList.length; i++) {
