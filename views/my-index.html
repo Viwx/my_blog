@@ -918,7 +918,11 @@
                         }
                     }
                     xhr.open("post", "/addBlog", false);
-                    xhr.send({articleTitle, articleContent});
+                    xhr.setRequestHeader("Content-type","application/json;charset=UTF-8");
+                    var obj = {"articleTitle":articleTitle, "articleContent":articleContent};
+                    var json = JSON.stringify(obj);
+                    console.log(json); 
+                    xhr.send(json);
                 }
             }
         }, false)
@@ -961,6 +965,7 @@
                 for (var i = 0; i < editNodeList.length; i++) {
                     editNodeList[i].style.display = "block";
                 }
+                init_edit();
             }
         }
 
@@ -997,11 +1002,34 @@
                     } else {
                         console.log("failed to load");
                     }
-                } else {
-                    console.log("failed to connect");
                 }
             }
             xhr.open("get", "/homeList", false);
+            xhr.send(null);
+        }
+
+        // 初始化编辑博客页面
+        function init_edit(){
+            var xhr = createXHR();
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == 4){
+                    if(xhr.status >= 200 && xhr.status < 300 || xhr.status == 304){
+                        var title = document.getElementsByClassName("content-top-input")[0],
+                        editor = quill,
+                        articleTitle = title.value,
+                        articleContent = "";
+                        
+                        var data = JSON.parse(xhr.responseText);
+                        console.log(data);
+                        // for(key in data){
+                        //     console.log(key);
+                        // }
+                        title.value = data.articleTitle;
+                        // editor.setContents(data.articleContent, "user");
+                    }
+                }
+            }
+            xhr.open("get", "/getBlog", false);
             xhr.send(null);
         }
 

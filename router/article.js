@@ -5,9 +5,18 @@ const uuid = require("uuid");
 let router = new Router();
 
 router.post("/addBlog", async(ctx)=>{
-    let data = ctx.request;
-    console.log(data);
-    ctx.body = "发布文章成功";
+    let data = ctx.request.body;
+    for(var i=0; i<data.articleContent.ops.length; i++){
+        data.articleContent.ops[i] = JSON.stringify(data.articleContent.ops[i]); 
+    }
+    console.log('data',data);
+    ctx.body = "data";
 })
-
+router.get("/getBlog", async(ctx)=>{
+    ctx.body = { articleTitle: 'jjj',
+    articleContent:
+     { ops:
+        [ '{"insert":"kkk\\nkkk\\njjj"}',
+          '{"attributes":{"header":1},"insert":"\\n"}' ] } };
+})
 module.exports = router;
