@@ -47,19 +47,17 @@ router.get("/getBlogList", async (ctx) => {
 
     ctx.body = { articleList };
 })
-router.get("/getBlog:id", async (ctx) => {
-    let id = ctx.params;
+router.get("/getBlog", async (ctx) => {
+    let id = ctx.request.query.id;
     await userModel.findArticle(id).then((data) => {
         let blogData = data[0];
         ctx.body = {
+            postDate: blogData.create_time,
             articleTitle: decodeURI(blogData.article_title),
             articleContent: decodeURI(blogData.article_content)
         };
     }, (error) => {
-        ctx.body = {
-            articleTitle: 'jjj',
-            articleContent: '<p>abc</p><p><strong>abc</strong></p><p><strong><em>abc<span class="ql-cursor">﻿</span></em></strong></p>'
-        };
+        ctx.body = "error";
     })
 })
 
@@ -69,6 +67,7 @@ function articleListFormat(){
     
     for(let i=0; i<temp.length; i++){
         let obj = {
+            id: temp[i].id,
             title: temp[i].article_title,
             postDate: temp[i].create_time
         }

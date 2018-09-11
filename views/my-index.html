@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/fontIcon/iconfont-camera.css">
     <link rel="stylesheet" href="css/fontIcon/iconfont-edit.css">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
     <style type="text/css">
         * {
             margin: 0;
@@ -597,6 +598,19 @@
             color: gray;
         }
 
+        .content-top-img>div>input {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        .content-top-img>div>input:hover {
+            cursor: pointer;
+        }
+
         .content-top-input {
             outline: none;
             width: 100%;
@@ -628,6 +642,36 @@
             color: white;
             background-color: #666666;
             cursor: pointer;
+        }
+
+        /*查看文章页面*/
+        .content-top {
+            display: flex;
+            align-content: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .content-top-left {
+            display: flex;
+            box-sizing: border-box;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            font-size: 40px;
+        }
+
+        .content-top-right {
+            display: flex;
+            box-sizing: border-box;
+            align-items: center;
+            justify-content: flex-end;
+            width: 50%;
+            height: 100%;
+            font-size: 12px;
+            color: #666666;
+            position: absolute;
+            right: 0;
         }
 
         .hover:hover {
@@ -744,9 +788,23 @@
             </div>
             <div hash="articles" id="articles">
             </div>
-            <div hash="edit">
+            <div hash="viewArticles">
                 <div class="content-top-img">
                     <div style="text-align: center;" class="hover">
+                        <i class="icon iconfont icon-camera" style="font-size: 60px;"></i>
+                        <div>选择文章标题照片</div>
+                    </div>
+                </div>
+                <div class="content-top">
+                    <div class="content-top-left"></div>
+                    <div class="content-top-right"></div>
+                </div>
+                <div id="viewer"></div>
+            </div>
+            <div hash="edit">
+                <div class="content-top-img">
+                    <div style="text-align: center;position: relative;" class="hover">
+                        <input type="file" id="blogImg">
                         <i class="icon iconfont icon-camera" style="font-size: 60px;"></i>
                         <div>选择文章标题照片</div>
                     </div>
@@ -774,10 +832,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="content-item">123</div>
-                <div class="content-item">123</div>
             </div>
-            <div hash="about"></div>
+            <div hash="about">
+            </div>
         </div>
     </div>
     <div class="footer">
@@ -791,7 +848,7 @@
             <div class="articles-item">
                 <div class="articles-item-title"><b>{year}</b></div>
                 <ul class="articles-item-content">`,
-            articlesTemplateLi = `<li><a href="">{title}</a><span>({postDate})</span></li>`,
+            articlesTemplateLi = `<li><a href="javascript:void(0)" name="titleLink" data-id={id}>{title}</a><span>({postDate})</span></li>`,
             articlesTemplateEnd = `</ul></div>`;
 
         var homeList = [{
@@ -801,6 +858,8 @@
             postDate: "Aut 15, 2018"
         }];
 
+        var monthsInEng = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aut', 'Sep', 'Oct', 'Nov', 'Dec'];
+
 
         var homeNodeList = document.querySelectorAll("[hash='home']"),
             articlesNodeList = document.querySelectorAll("[hash='articles']"),
@@ -808,8 +867,10 @@
             aboutNodeList = document.querySelectorAll("[hash='aount']"),
             hashNodeList = document.querySelectorAll("[hash]"),
             commonNodeList = document.querySelectorAll("[hash='common']"),
-            editNodeList = document.querySelectorAll("[hash='edit']");
-        var fixedBox = document.getElementById("fixedBox");
+            editNodeList = document.querySelectorAll("[hash='edit']"),
+            viewArticlesNodeList = document.querySelectorAll("[hash='viewArticles']");
+        var fixedBox = document.getElementById("fixedBox"),
+            blogImg = document.getElementById("blogImg");
 
         // quill编辑器
         var quill = new Quill("#editor", {
@@ -832,6 +893,10 @@
 
         window.addEventListener("hashchange", function () {
             getHashElement();
+        })
+
+        blogImg.addEventListener("change", function () {
+            console.log(getPath(this));
         })
 
         document.addEventListener("mousewheel", function () {
@@ -950,6 +1015,7 @@
                     }
                 } else if (className.indexOf("edit") != -1) {
                     this.location.hash = "edit";
+                    init_edit();
                 }
             }
             else if (tagName === "button") {
@@ -975,6 +1041,18 @@
                     var obj = { "articleTitle": articleTitle, "articleContent": articleContent },
                         json = JSON.stringify(obj);
                     xhr.send(json);
+                }
+                else if (className === "content-bottom-btn") {
+                    window.location.hash = "articles";
+                }
+            }
+            else if (tagName === "a") {
+                var name = target.getAttribute("name");
+                if (!name) return;
+                if (name === "titleLink") {
+                    var id = target.getAttribute("data-id");
+                    window.location.hash = "viewArticles";
+                    init_edit(id);
                 }
             }
         }, false)
@@ -1017,7 +1095,11 @@
                 for (var i = 0; i < editNodeList.length; i++) {
                     editNodeList[i].style.display = "block";
                 }
-                init_edit();
+                // init_edit();
+            } else if (currentHash === "#viewArticles") {
+                for (var i = 0; i < viewArticlesNodeList.length; i++) {
+                    viewArticlesNodeList[i].style.display = "block";
+                }
             }
         }
 
@@ -1034,7 +1116,6 @@
                 if (xhr.readyState == 4) {
                     if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
                         homeList = JSON.parse(xhr.responseText).homeList;
-                        console.log(homeList);
                         if (!homeList || homeList.length == 0) return;
 
                         for (var i = 0; i < homeList.length; i++) {
@@ -1098,27 +1179,28 @@
                                 map.set(tempYear, tempYearMap);
                             }
                         }
-                        console.log(map);
 
-                        
+
                         var repx = /\{\s*([a-zA-Z\.\_0-9()]+)\s*\}/gm;
-                        var monthsInEng = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aut', 'Sep', 'Oct', 'Nov', 'Dec'];
                         var articlesTemplate = "";
 
                         for (var [year, yearMap] of map) {
                             articlesTemplate += articlesTemplateStart.replace(repx, function () {
-                                return year+" 年";
+                                return year + " 年";
                             });
                             for (var [month, monthList] of yearMap) {
                                 for (var i = 0; i < monthList.length; i++) {
                                     articlesTemplate += articlesTemplateLi.replace(repx, function (match, orginalText, pos) {
                                         var title = decodeURI(monthList[i].title),
-                                            postDate = new Date(monthList[i].postDate);
+                                            postDate = new Date(monthList[i].postDate),
+                                            id = monthList[i].id;
                                         switch (orginalText) {
+                                            case "id":
+                                                return id;
                                             case "title":
                                                 return title;
                                             case "postDate":
-                                                return monthsInEng[Number.parseInt(postDate.getMonth())]+" "+postDate.getDate()+" "+year;
+                                                return monthsInEng[Number.parseInt(postDate.getMonth())] + " " + postDate.getDate() + " " + year;
                                         }
                                     });
                                 }
@@ -1132,28 +1214,36 @@
                     }
                 }
             }
-            xhr.open("get", "/getBlogList", false);
+            xhr.open("get", "/getBlogList", true);
             xhr.send(null);
         }
 
         // 初始化编辑博客页面
         function init_edit() {
-            if (typeof arguments[0] != "string" || arguments[0] == "") return;
-
             var id = arguments[0],
-                xhr = createXHR();
+                titleEditor = document.getElementsByClassName("content-top-input")[0],
+                editor = quill,
+                titleViewer = document.getElementsByClassName("content-top-left")[0],
+                dateViewer = document.getElementsByClassName("content-top-right")[0],
+                viewer = document.getElementById("viewer");
 
+
+            if (typeof id != "string" || id == "") {
+                titleEditor.value = "";
+                editor.container.firstChild.innerHTML = "";
+                return;
+            }
+
+            var xhr = createXHR();
             xhr.onreadystatechange = function () {
                 if (xhr.readyState == 4) {
                     if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304) {
-                        var title = document.getElementsByClassName("content-top-input")[0],
-                            editor = quill,
-                            articleTitle = title.value,
-                            articleContent = "";
 
-                        var data = JSON.parse(xhr.responseText);
-                        title.value = data.articleTitle;
-                        editor.container.firstChild.innerHTML = data.articleContent;
+                        var data = JSON.parse(xhr.responseText),
+                            postDate = new Date(data.postDate);
+                        titleViewer.innerHTML = data.articleTitle;
+                        dateViewer.innerHTML = monthsInEng[Number.parseInt(postDate.getMonth())] + " " + postDate.getDate() + " " + postDate.getFullYear();
+                        viewer.innerHTML = data.articleContent;
                     }
                 }
             }
@@ -1164,6 +1254,25 @@
         // 创建xhr对象
         function createXHR() {
             return new XMLHttpRequest();
+        }
+
+        // 获取客户端文件的路径
+        function getPath(){
+            var obj = arguments[0].files;
+            console.log(obj);
+
+            if(obj){
+                if(window.navigator.userAgent.indexOf("MSIE")>=-1){
+                    obj.select();
+                    return document.selection.createRange().text;
+                }else if(window.navigator.userAgent.indexOf("Firefox")>=-1){
+                    if(obj.files){
+                        return obj.files.item(0).getAsDataURL();
+                    }
+                    return obj.value;
+                }
+                return obj.value;
+            }
         }
     </script>
 </body>
