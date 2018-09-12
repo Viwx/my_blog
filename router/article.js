@@ -1,20 +1,32 @@
 const Router = require("koa-router");
 const userModel = require("./../db/index.js");
 const uuidv1 = require("uuid/v1");
+const multer = require("koa-multer");
 
 let router = new Router();
 
-router.post("/addBlog", async (ctx) => {
-    let data = ctx.request.body,
+const storage = multer.diskStorage({
+    destination: 'uploads/',
+    filename(ctx, file, cb) {
+        const filenameArr = file.originalname.split('.');
+        cb(null, Date.now() + '.' + filenameArr[filenameArr.length - 1]);
+    }
+});
+
+const upload = multer({ storage: storage });
+
+router.post("/addBlog", upload.single("file"), async (ctx) => {
+    let json = JSON.parse(ctx.req.body.json),
+        file = ctx.req.file,
         blogModel = [];
 
     let id = uuidv1(),
         authorId = null,
         articleTypeId = null,
-        articleTitle = data.articleTitle,
-        articleCover = null,
+        articleTitle = json.articleTitle,
+        articleCover = file.filename,
         articleSubtitle = null,
-        articleContent = data.articleContent,
+        articleContent = json.articleContent,
         createTime = new Date(),
         updateTime = null;
 
@@ -53,6 +65,7 @@ router.get("/getBlog", async (ctx) => {
         let blogData = data[0];
         ctx.body = {
             postDate: blogData.create_time,
+            articleCover: blogData.article_cover,
             articleTitle: decodeURI(blogData.article_title),
             articleContent: decodeURI(blogData.article_content)
         };
@@ -61,11 +74,11 @@ router.get("/getBlog", async (ctx) => {
     })
 })
 
-function articleListFormat(){
+function articleListFormat() {
     let temp = arguments[0],
-    articleList = [];
-    
-    for(let i=0; i<temp.length; i++){
+        articleList = [];
+
+    for (let i = 0; i < temp.length; i++) {
         let obj = {
             id: temp[i].id,
             title: temp[i].article_title,

@@ -8,6 +8,7 @@ const app = new Koa();
 
 app.use(staticServe(__dirname + "/static"));
 app.use(staticServe(__dirname + "/views"));
+app.use(staticServe(__dirname + "/uploads"));
 
 app.use(bodyParser({
     enableTypes: ["json", "form", "text"]
